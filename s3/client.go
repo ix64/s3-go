@@ -103,3 +103,12 @@ func (c *Client) composeObjectName(remotePath string) string {
 	// s3 object name prefix should not start with "/"
 	return strings.TrimPrefix(path.Join(c.cfg.Prefix, remotePath), "/")
 }
+
+// SetDownloadGenerator 可设置自定义的下载链接生成器
+func (c *Client) SetDownloadGenerator(g s3down.Generator) {
+	c.download = g
+}
+
+func (c *Client) SetUploadGenerator(g s3up.Generator) {
+	c.upload = g
+}
