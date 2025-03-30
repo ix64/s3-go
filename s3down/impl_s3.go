@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"path"
 
+	"github.com/minio/minio-go/v7/pkg/s3utils"
 	"github.com/minio/minio-go/v7/pkg/signer"
 
 	"github.com/ix64/s3-go/s3type"
@@ -100,6 +101,7 @@ func (d *GeneratorS3) GenerateDownload(_ context.Context, params *GenerateParams
 	}
 
 	ret := composeObjectURL(d.endpoint, d.cfg.Prefix, params.RemotePath)
+	ret.RawPath = s3utils.EncodePath(ret.Path)
 	ret.RawQuery = reqParams.Encode()
 
 	if !d.cfg.PublicRead {
