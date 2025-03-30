@@ -7,23 +7,23 @@ import (
 )
 
 type Config struct {
-	Endpoint     string `validate:"required"`
-	Bucket       string `validate:"required"`
-	BucketLookup s3type.BucketLookupType
-	Prefix       string
+	Endpoint     string                  `json:"endpoint"`
+	Bucket       string                  `json:"bucket"`
+	BucketLookup s3type.BucketLookupType `json:"bucket_lookup"`
+	Prefix       string                  `json:"prefix"`
 
-	AccessKey string `validate:"required"`
-	SecretKey string `validate:"required"`
+	AccessKey string `json:"access_key"`
+	SecretKey string `json:"secret_key"`
 
 	// UploadGenerator is optional, default to s3
-	UploadGeneratorType UploadGeneratorType
+	UploadGeneratorType UploadGeneratorType `json:"upload_generator_type"`
 
 	// UploadGeneratorConfig should unmarshal by Generator constructor
-	UploadGeneratorConfig json.RawMessage
+	UploadGeneratorConfig json.RawMessage `json:"upload_generator_config"`
 
 	// DownloadGenerator is optional, default to s3
-	DownloadGeneratorType DownloadGeneratorType
+	DownloadGeneratorType DownloadGeneratorType `json:"download_generator_type"`
 
 	// DownloadGeneratorConfig should unmarshal by Generator constructor
-	DownloadGeneratorConfig json.RawMessage
+	DownloadGeneratorConfig json.RawMessage `json:"download_generator_config"`
 }

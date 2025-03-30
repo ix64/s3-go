@@ -58,17 +58,17 @@ type GeneratorTencentCloudCDNConfig struct {
 	GeneratorConfigCommon
 
 	// Endpoint 填写CDN URL，例如：https://cdn.example.com
-	Endpoint string
+	Endpoint string `json:"endpoint"`
 
 	// AuthMode 填写控制台里的 “鉴权模式”
-	AuthMode TencentCloudCDNAuthMode
+	AuthMode TencentCloudCDNAuthMode `json:"auth_mode"`
 
 	// AuthKey 填写控制台里的 “主KEY” 或 “副KEY”
-	AuthKey string
+	AuthKey string `json:"auth_key"`
 
 	// DynamicExpire 生成的签名直接使用国企时间作为时间戳 (timestamp = ExpiredAt)
 	// 因此开启后，在控制台必须将 “鉴权URL有效时长” 设置为 0
-	DynamicExpire bool
+	DynamicExpire bool `json:"dynamic_expire"`
 }
 
 type GeneratorTencentCloudCDN struct {

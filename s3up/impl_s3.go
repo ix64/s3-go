@@ -14,17 +14,17 @@ import (
 )
 
 type GeneratorS3Config struct {
-	Endpoint     string
-	Bucket       string
-	BucketLookup s3type.BucketLookupType
-	Prefix       string
+	Endpoint     string                  `json:"endpoint"`
+	Bucket       string                  `json:"bucket"`
+	BucketLookup s3type.BucketLookupType `json:"bucket_lookup"`
+	Prefix       string                  `json:"prefix"`
 
-	Region string
+	Region string `json:"region"`
 
-	AccessKey string
-	SecretKey string
+	AccessKey string `json:"accessKey"`
+	SecretKey string `json:"secretKey"`
 
-	ChecksumEnabled bool // enable sha256 checksum
+	ChecksumEnabled bool `json:"checksum_enabled"` // enable sha256 checksum
 }
 type GeneratorS3 struct {
 	client *minio.Client
