@@ -114,7 +114,11 @@ func TestClient_GenerateDownload(t *testing.T) {
 
 	origPath := filepath.Join(tempDir, "/random.bin")
 	downloadPath := filepath.Join(tempDir, "generate-download_download.bin")
-	remotePath := "__e2e_test__/generate-download/uploaded.bin"
+	// use dynamic remote path to prevent CDN cache breaking the test
+	remotePath := fmt.Sprintf(
+		"__e2e_test__/generate-download/%s.bin",
+		time.Now().UTC().Format(time.RFC3339),
+	)
 
 	t.Run("GenerateDownload", func(t *testing.T) {
 		err := c.UploadFile(context.Background(), remotePath, origPath)
@@ -249,7 +253,6 @@ func generatePOSTUploadRequest(info *s3up.GenerateResult, localPath string) (*ht
 	buf := bytes.NewBuffer(nil)
 
 	w := multipart.NewWriter(buf)
-	defer w.Close()
 
 	for k, v := range info.FormData {
 		if err := w.WriteField(k, v); err != nil {
@@ -262,13 +265,12 @@ func generatePOSTUploadRequest(info *s3up.GenerateResult, localPath string) (*ht
 		return nil, err
 	}
 
-	f, err := os.Open(localPath)
+	fContent, err := os.ReadFile(localPath)
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
 
-	if _, err := io.Copy(fw, f); err != nil {
+	if _, err := fw.Write(fContent); err != nil {
 		return nil, err
 	}
 

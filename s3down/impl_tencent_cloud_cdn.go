@@ -203,8 +203,6 @@ func (d *GeneratorTencentCloudCDN) signModeD(u *url.URL, query url.Values, expir
 	sign := sha256.Sum256([]byte(signText))
 	signHex := hex.EncodeToString(sign[:])
 
-	u.Path = path.Join("/", signHex, ts, u.Path)
-
 	query.Set("sign", signHex)
 	query.Set("t", ts)
 }

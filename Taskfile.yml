@@ -11,19 +11,25 @@ tasks:
 
   test-e2e:tencent-cloud-cos:
     env:
-      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "secrets/e2e-tencent-cloud-cos.json" }}'
+      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "secrets/e2e-tencent-cloud-cos.jsonc" }}'
     desc: E2E 测试 (腾讯云 COS)
+    cmd: go test -v ./s3
+
+  test-e2e:tencent-cloud-cdn:
+    env:
+      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "secrets/e2e-tencent-cloud-cdn.jsonc" }}'
+    desc: E2E 测试 (腾讯云 COS + CDN)
     cmd: go test -v ./s3
 
   test-e2e:aliyun-oss:
     env:
-      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "secrets/e2e-aliyun-oss.json" }}'
+      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "secrets/e2e-aliyun-oss.jsonc" }}'
     desc: E2E 测试 (阿里云 OSS)
     cmd: go test -v ./s3
 
   test-e2e:cloudflare-r2:
     env:
-      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "secrets/e2e-cloudflare-r2.json" }}'
+      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "secrets/e2e-cloudflare-r2.jsonc" }}'
     desc: E2E 测试 (腾讯云 COS)
     cmd: go test -v ./s3
 

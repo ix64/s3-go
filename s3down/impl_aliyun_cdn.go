@@ -193,8 +193,6 @@ func (d *GeneratorAliyunCDN) signModeF(u *url.URL, query url.Values, expire time
 	sign := md5.Sum([]byte(signText))
 	signHex := hex.EncodeToString(sign[:])
 
-	u.Path = path.Join("/", signHex, ts, u.Path)
-
 	query.Set("sign", signHex)
 	query.Set("time", ts)
 }
