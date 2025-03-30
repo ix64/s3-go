@@ -1,0 +1,13 @@
+name: s3-e2e-minio
+services:
+  minio:
+    image: minio/minio:latest
+    restart: no
+    entrypoint: sh
+    command: [ "-c","mkdir -p /data/e2e-test &&minio server /data --console-address :9001" ]
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: "minio"
+      MINIO_ROOT_PASSWORD: "E2ETestPassword"
