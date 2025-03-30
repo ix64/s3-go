@@ -29,7 +29,7 @@ tasks:
 
   test-e2e:minio:
     env:
-      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "e2e/minio/config.json" }}'
+      E2E_S3_CONFIG: '{{joinPath .ROOT_DIR "e2e/minio/config.jsonc" }}'
     desc: E2E 测试 (MinIO)
     cmds:
       - docker compose -f e2e/minio/docker-compose.yaml up -d

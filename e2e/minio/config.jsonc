@@ -1,0 +1,10 @@
+// MinIO E2E Test Config
+{
+  "endpoint": "http://127.0.0.1:9000",
+  "bucket": "e2e-test",
+  "bucket_lookup": "path",
+  "access_key": "minio",
+  "secret_key": "E2ETestPassword",
+  "upload_generator_type": "s3",
+  "download_generator_type": "s3"
+}
