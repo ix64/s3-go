@@ -12,8 +12,8 @@ import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 
+	"github.com/ix64/s3-go/s3common"
 	"github.com/ix64/s3-go/s3down"
-	"github.com/ix64/s3-go/s3type"
 	"github.com/ix64/s3-go/s3up"
 )
 
@@ -66,11 +66,11 @@ func (c *Client) init(ctx context.Context) (err error) {
 
 	var bucketLookup minio.BucketLookupType
 	switch c.cfg.BucketLookup {
-	case s3type.BucketLookupDNS:
+	case s3common.BucketLookupDNS:
 		bucketLookup = minio.BucketLookupDNS
-	case s3type.BucketLookupPath:
+	case s3common.BucketLookupPath:
 		bucketLookup = minio.BucketLookupPath
-	case s3type.BucketLookupCNAME:
+	case s3common.BucketLookupCNAME:
 		return errors.New("custom domain by CNAME is not supported for S3 UploadGenerator")
 	default:
 		return fmt.Errorf("unknown bucket lookup type: %s", c.cfg.BucketLookup)

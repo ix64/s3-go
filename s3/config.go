@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/ix64/s3-go/s3type"
+	"github.com/ix64/s3-go/s3common"
 )
 
 type Config struct {
-	Endpoint     string                  `json:"endpoint"`
-	Bucket       string                  `json:"bucket"`
-	BucketLookup s3type.BucketLookupType `json:"bucket_lookup"`
-	Prefix       string                  `json:"prefix"`
+	Endpoint     string                    `json:"endpoint"`
+	Bucket       string                    `json:"bucket"`
+	BucketLookup s3common.BucketLookupType `json:"bucket_lookup"`
+	Prefix       string                    `json:"prefix"`
 
 	AccessKey string `json:"access_key"`
 	SecretKey string `json:"secret_key"`
@@ -38,9 +38,9 @@ func (c *Config) Validate() error {
 	}
 
 	switch c.BucketLookup {
-	case s3type.BucketLookupDNS,
-		s3type.BucketLookupPath,
-		s3type.BucketLookupCNAME:
+	case s3common.BucketLookupDNS,
+		s3common.BucketLookupPath,
+		s3common.BucketLookupCNAME:
 	case "":
 		return fmt.Errorf("bucket_lookup is required")
 	default:

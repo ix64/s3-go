@@ -11,15 +11,15 @@ import (
 	"github.com/minio/minio-go/v7/pkg/s3utils"
 	"github.com/minio/minio-go/v7/pkg/signer"
 
-	"github.com/ix64/s3-go/s3type"
+	"github.com/ix64/s3-go/s3common"
 )
 
 type GeneratorS3Config struct {
 	GeneratorConfigCommon
 
-	Endpoint     string                  `json:"endpoint"`
-	Bucket       string                  `json:"bucket"`
-	BucketLookup s3type.BucketLookupType `json:"bucket_lookup"`
+	Endpoint     string                    `json:"endpoint"`
+	Bucket       string                    `json:"bucket"`
+	BucketLookup s3common.BucketLookupType `json:"bucket_lookup"`
 
 	Region string `json:"region"`
 
@@ -67,11 +67,11 @@ func NewGeneratorS3(cfg *GeneratorS3Config) (*GeneratorS3, error) {
 	}
 
 	switch cfg.BucketLookup {
-	case s3type.BucketLookupDNS:
+	case s3common.BucketLookupDNS:
 		u.Host = cfg.Bucket + "." + u.Host
-	case s3type.BucketLookupPath:
+	case s3common.BucketLookupPath:
 		u.Path = path.Join("/", cfg.Bucket, u.Path)
-	case s3type.BucketLookupCNAME:
+	case s3common.BucketLookupCNAME:
 		// do nothing
 	default:
 		return nil, fmt.Errorf("unknown bucket lookup type: %s", cfg.BucketLookup)
@@ -97,7 +97,7 @@ func (d *GeneratorS3) GenerateDownload(_ context.Context, params *GenerateParams
 	}
 
 	if !d.cfg.DisableResponseContentDisposition && params.AttachmentFilename != "" {
-		reqParams.Set("response-content-disposition", composeContentDisposition(params.AttachmentFilename))
+		reqParams.Set("response-content-disposition", s3common.ComposeContentDisposition(params.AttachmentFilename))
 	}
 
 	ret := composeObjectURL(d.endpoint, d.cfg.Prefix, params.RemotePath)

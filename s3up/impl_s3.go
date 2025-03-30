@@ -12,14 +12,14 @@ import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 
-	"github.com/ix64/s3-go/s3type"
+	"github.com/ix64/s3-go/s3common"
 )
 
 type GeneratorS3Config struct {
-	Endpoint     string                  `json:"endpoint"`
-	Bucket       string                  `json:"bucket"`
-	BucketLookup s3type.BucketLookupType `json:"bucket_lookup"`
-	Prefix       string                  `json:"prefix"`
+	Endpoint     string                    `json:"endpoint"`
+	Bucket       string                    `json:"bucket"`
+	BucketLookup s3common.BucketLookupType `json:"bucket_lookup"`
+	Prefix       string                    `json:"prefix"`
 
 	Region string `json:"region"`
 
@@ -77,11 +77,11 @@ func NewGeneratorS3(cfg *GeneratorS3Config) (Generator, error) {
 
 	var bucketLookup minio.BucketLookupType
 	switch cfg.BucketLookup {
-	case s3type.BucketLookupDNS:
+	case s3common.BucketLookupDNS:
 		bucketLookup = minio.BucketLookupDNS
-	case s3type.BucketLookupPath:
+	case s3common.BucketLookupPath:
 		bucketLookup = minio.BucketLookupPath
-	case s3type.BucketLookupCNAME:
+	case s3common.BucketLookupCNAME:
 		return nil, errors.New("custom domain by CNAME is not supported for S3 UploadGenerator")
 	default:
 		return nil, fmt.Errorf("unknown bucket lookup type: %s", cfg.BucketLookup)
@@ -136,11 +136,17 @@ func (p *GeneratorS3) generatePOST(ctx context.Context, params *GenerateParams) 
 	}
 
 	// enforce content type
-	if params.ContentType == "" {
-		params.ContentType = "application/octet-stream"
+	if params.ContentType != "" {
+		if err := policy.SetContentType(params.ContentType); err != nil {
+			return nil, err
+		}
 	}
-	if err := policy.SetContentType(params.ContentType); err != nil {
-		return nil, err
+
+	// enforce attachment filename
+	if params.AttachmentFilename != "" {
+		if err := policy.SetContentDisposition(s3common.ComposeContentDisposition(params.AttachmentFilename)); err != nil {
+			return nil, err
+		}
 	}
 
 	// optionally enforce file sha256 checksum

@@ -14,6 +14,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+
+	"github.com/ix64/s3-go/s3common"
 )
 
 type AliyunCDNAuthMode string
@@ -124,7 +126,7 @@ func (d *GeneratorAliyunCDN) GenerateDownload(_ context.Context, params *Generat
 	}
 
 	if !d.cfg.DisableResponseContentDisposition && params.AttachmentFilename != "" {
-		query.Set("response-content-disposition", composeContentDisposition(params.AttachmentFilename))
+		query.Set("response-content-disposition", s3common.ComposeContentDisposition(params.AttachmentFilename))
 	}
 
 	u := composeObjectURL(d.endpoint, d.cfg.Prefix, params.RemotePath)

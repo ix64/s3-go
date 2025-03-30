@@ -20,6 +20,9 @@ type GenerateParams struct {
 	// optional, content-type of pending file
 	ContentType string
 
+	// optional, attachment filename while downloading
+	AttachmentFilename string
+
 	// optional, sha256 checksum of pending file
 	Sha256 []byte
 

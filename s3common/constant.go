@@ -1,4 +1,4 @@
-package s3type
+package s3common
 
 type BucketLookupType string
 
