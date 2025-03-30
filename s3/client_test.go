@@ -148,6 +148,11 @@ func TestClient_GenerateDownload(t *testing.T) {
 		defer resp.Body.Close()
 
 		assert.Equal(t, http.StatusOK, resp.StatusCode)
+		if resp.StatusCode != http.StatusOK {
+			respBody, err := io.ReadAll(resp.Body)
+			assert.NoError(t, err)
+			t.Logf("resp body: %s", string(respBody))
+		}
 
 		f, err := os.Create(downloadPath)
 		assert.NoError(t, err)

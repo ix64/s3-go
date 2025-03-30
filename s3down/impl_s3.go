@@ -91,7 +91,7 @@ type GeneratorS3 struct {
 func (d *GeneratorS3) GenerateDownload(_ context.Context, params *GenerateParams) (*url.URL, error) {
 	reqParams := make(url.Values)
 
-	if params.ContentType != "" {
+	if !d.cfg.DisableResponseContentType && params.ContentType != "" {
 		reqParams.Set("response-content-type", params.ContentType)
 	}
 

@@ -116,7 +116,7 @@ func NewGeneratorTencentCloudCDN(cfg *GeneratorTencentCloudCDNConfig) (*Generato
 func (d *GeneratorTencentCloudCDN) GenerateDownload(_ context.Context, params *GenerateParams) (*url.URL, error) {
 	query := make(url.Values)
 
-	if params.ContentType != "" {
+	if !d.cfg.DisableResponseContentType && params.ContentType != "" {
 		query.Set("response-content-type", params.ContentType)
 	}
 

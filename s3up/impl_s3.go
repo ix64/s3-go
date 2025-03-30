@@ -31,6 +31,8 @@ type GeneratorS3Config struct {
 	DisableChecksum bool `json:"checksum_enabled"`
 
 	// DisablePOST 部分供应商不支持 Pre-signed POST 允许回退到 Pre-signed PUT
+	//   已知不支持的供应商
+	//   - Cloudflare R2: https://developers.cloudflare.com/r2/api/s3/presigned-urls/#supported-http-methods
 	DisablePOST bool `json:"disable_post"`
 }
 
