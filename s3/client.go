@@ -35,6 +35,10 @@ type Client struct {
 
 // NewClient 初始化 MinIO Storage
 func NewClient(cfg *Config) (c *Client, err error) {
+	if err := cfg.Validate(); err != nil {
+		return nil, fmt.Errorf("failed to validate config: %w", err)
+	}
+
 	c = &Client{
 		prefix: strings.TrimPrefix(cfg.Prefix, "/"),
 		cfg:    cfg,

@@ -61,12 +61,28 @@ type GeneratorAliyunCDNConfig struct {
 	DynamicExpire bool `json:"dynamic_expire"`
 }
 
+func (c *GeneratorAliyunCDNConfig) Validate() error {
+	if c.Endpoint == "" {
+		return errors.New("endpoint is required")
+	}
+
+	if c.AuthMode != AliyunCDNAuthModeNone && c.AuthKey == "" {
+		return errors.New("auth key is required")
+	}
+
+	return nil
+}
+
 type GeneratorAliyunCDN struct {
 	endpoint *url.URL
 	cfg      *GeneratorAliyunCDNConfig
 }
 
 func NewGeneratorAliyunCDN(cfg *GeneratorAliyunCDNConfig) (*GeneratorAliyunCDN, error) {
+	if err := cfg.Validate(); err != nil {
+		return nil, err
+	}
+
 	u, err := url.Parse(cfg.Endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse endpoint: %w", err)

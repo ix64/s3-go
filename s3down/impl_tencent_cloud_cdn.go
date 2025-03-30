@@ -71,12 +71,28 @@ type GeneratorTencentCloudCDNConfig struct {
 	DynamicExpire bool `json:"dynamic_expire"`
 }
 
+func (c *GeneratorTencentCloudCDNConfig) Validate() error {
+	if c.Endpoint == "" {
+		return errors.New("endpoint is required")
+	}
+
+	if c.AuthMode != TencentCloudCDNAuthModeNone && c.AuthKey == "" {
+		return errors.New("auth key is required")
+	}
+
+	return nil
+}
+
 type GeneratorTencentCloudCDN struct {
 	endpoint *url.URL
 	cfg      *GeneratorTencentCloudCDNConfig
 }
 
 func NewGeneratorTencentCloudCDN(cfg *GeneratorTencentCloudCDNConfig) (*GeneratorTencentCloudCDN, error) {
+	if err := cfg.Validate(); err != nil {
+		return nil, err
+	}
+
 	u, err := url.Parse(cfg.Endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse endpoint: %w", err)

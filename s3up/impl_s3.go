@@ -31,28 +31,32 @@ type GeneratorS3 struct {
 	cfg    *GeneratorS3Config
 }
 
-func checkGeneratorS3Config(cfg *GeneratorS3Config) error {
-	if cfg.Endpoint == "" {
+func (c *GeneratorS3Config) Validate() error {
+	if c.Endpoint == "" {
 		return errors.New("endpoint is required")
 	}
 
-	if cfg.Bucket == "" {
+	if c.Bucket == "" {
 		return errors.New("bucket is required")
 	}
 
-	if cfg.Region == "" {
+	if c.Region == "" {
 		return errors.New("region is required")
 	}
 
-	if cfg.AccessKey == "" || cfg.SecretKey == "" {
+	if c.AccessKey == "" || c.SecretKey == "" {
 		return errors.New("access key and secret key is required when anonymous is false")
+	}
+
+	if c.BucketLookup == "" {
+		return errors.New("bucket lookup is required")
 	}
 
 	return nil
 }
 
 func NewGeneratorS3(cfg *GeneratorS3Config) (*GeneratorS3, error) {
-	if err := checkGeneratorS3Config(cfg); err != nil {
+	if err := cfg.Validate(); err != nil {
 		return nil, err
 	}
 
