@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/url"
 	"path"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -54,6 +55,14 @@ const (
 	TencentCloudCDNAuthModeD = "type-d"
 )
 
+var TencentCloudCDNAuthModes = []TencentCloudCDNAuthMode{
+	TencentCloudCDNAuthModeNone,
+	TencentCloudCDNAuthModeA,
+	TencentCloudCDNAuthModeB,
+	TencentCloudCDNAuthModeC,
+	TencentCloudCDNAuthModeD,
+}
+
 type GeneratorTencentCloudCDNConfig struct {
 	GeneratorConfigCommon
 
@@ -74,6 +83,10 @@ type GeneratorTencentCloudCDNConfig struct {
 func (c *GeneratorTencentCloudCDNConfig) Validate() error {
 	if c.Endpoint == "" {
 		return errors.New("endpoint is required")
+	}
+
+	if !slices.Contains(TencentCloudCDNAuthModes, c.AuthMode) {
+		return fmt.Errorf("unknown auth mode: %s", c.AuthMode)
 	}
 
 	if c.AuthMode != TencentCloudCDNAuthModeNone && c.AuthKey == "" {

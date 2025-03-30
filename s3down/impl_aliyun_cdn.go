@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/url"
 	"path"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -44,6 +45,14 @@ const (
 	AliyunCDNAuthModeF = "type-f"
 )
 
+var AliyunCDNAuthModes = []AliyunCDNAuthMode{
+	AliyunCDNAuthModeNone,
+	AliyunCDNAuthModeA,
+	AliyunCDNAuthModeB,
+	AliyunCDNAuthModeC,
+	AliyunCDNAuthModeF,
+}
+
 type GeneratorAliyunCDNConfig struct {
 	GeneratorConfigCommon
 
@@ -64,6 +73,10 @@ type GeneratorAliyunCDNConfig struct {
 func (c *GeneratorAliyunCDNConfig) Validate() error {
 	if c.Endpoint == "" {
 		return errors.New("endpoint is required")
+	}
+
+	if !slices.Contains(AliyunCDNAuthModes, c.AuthMode) {
+		return fmt.Errorf("unknown auth mode: %s", c.AuthMode)
 	}
 
 	if c.AuthMode != AliyunCDNAuthModeNone && c.AuthKey == "" {
