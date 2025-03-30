@@ -95,7 +95,7 @@ func (d *GeneratorS3) GenerateDownload(_ context.Context, params *GenerateParams
 		reqParams.Set("response-content-type", params.ContentType)
 	}
 
-	if params.AttachmentFilename != "" {
+	if !d.cfg.DisableResponseContentDisposition && params.AttachmentFilename != "" {
 		reqParams.Set("response-content-disposition", composeContentDisposition(params.AttachmentFilename))
 	}
 

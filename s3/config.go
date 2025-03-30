@@ -74,3 +74,17 @@ func (c *Config) Validate() error {
 
 	return nil
 }
+
+// ParseConfig 读取 JSON 格式的配置文件
+func ParseConfig(data []byte) (*Config, error) {
+	var cfg Config
+	if err := json.Unmarshal(data, &cfg); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal config: %w", err)
+	}
+
+	if err := cfg.Validate(); err != nil {
+		return nil, fmt.Errorf("failed to validate config: %w", err)
+	}
+
+	return &cfg, nil
+}

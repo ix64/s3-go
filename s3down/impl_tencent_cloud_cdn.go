@@ -133,7 +133,7 @@ func (d *GeneratorTencentCloudCDN) GenerateDownload(_ context.Context, params *G
 		query.Set("response-content-type", params.ContentType)
 	}
 
-	if params.AttachmentFilename != "" {
+	if !d.cfg.DisableResponseContentDisposition && params.AttachmentFilename != "" {
 		query.Set("response-content-disposition", composeContentDisposition(params.AttachmentFilename))
 	}
 

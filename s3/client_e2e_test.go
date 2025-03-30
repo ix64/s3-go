@@ -2,7 +2,6 @@ package s3_test
 
 import (
 	"crypto/rand"
-	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -36,10 +35,9 @@ func initE2EClient(t *testing.T) (client *s3.Client, tempDir string, err error) 
 			return nil, "", fmt.Errorf("failed to standardize config: %w", err)
 		}
 
-		cfg := &s3.Config{}
-
-		if err := json.Unmarshal(cfgContent, cfg); err != nil {
-			return nil, "", fmt.Errorf("failed to unmarshal config: %w", err)
+		cfg, err := s3.ParseConfig(cfgContent)
+		if err != nil {
+			return nil, "", fmt.Errorf("failed to parse config: %w", err)
 		}
 
 		client, err = s3.NewClient(cfg)
