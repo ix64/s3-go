@@ -22,6 +22,7 @@ func TestClient_UploadDownloadFile(t *testing.T) {
 	c, tempDir, err := initE2EClient(t)
 	if err != nil {
 		t.Errorf("failed to init e2e client: %v", err)
+		return
 	}
 
 	origPath := filepath.Join(tempDir, localPathRandom)
@@ -53,6 +54,7 @@ func TestClient_ObjectOperation(t *testing.T) {
 	c, tempDir, err := initE2EClient(t)
 	if err != nil {
 		t.Errorf("failed to init e2e client: %v", err)
+		return
 	}
 
 	origPath := filepath.Join(tempDir, localPathRandom)
@@ -105,6 +107,7 @@ func TestClient_GenerateDownload(t *testing.T) {
 	c, tempDir, err := initE2EClient(t)
 	if err != nil {
 		t.Errorf("failed to init e2e client: %v", err)
+		return
 	}
 
 	origPath := filepath.Join(tempDir, "/random.bin")
@@ -158,6 +161,7 @@ func TestClient_GenerateUpload(t *testing.T) {
 	c, tempDir, err := initE2EClient(t)
 	if err != nil {
 		t.Errorf("failed to init e2e client: %v", err)
+		return
 	}
 
 	origPath := filepath.Join(tempDir, localPathRandom)

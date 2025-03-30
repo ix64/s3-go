@@ -19,9 +19,9 @@ const (
 func initE2EClient(t *testing.T) (client *s3.Client, tempDir string, err error) {
 
 	{ // load config & create client
-		cfgPath, ok := os.LookupEnv("E2E_STORAGE_CONFIG")
+		cfgPath, ok := os.LookupEnv("E2E_S3_CONFIG")
 		if !ok || cfgPath == "" {
-			t.Skipf("env E2E_STORAGE_CONFIG not set")
+			t.Skipf("env E2E_S3_CONFIG not set")
 		}
 
 		cfgContent, err := os.ReadFile(cfgPath)
