@@ -2,6 +2,7 @@ package s3up
 
 import (
 	"context"
+	"net/http"
 	"net/url"
 	"time"
 )
@@ -27,7 +28,9 @@ type GenerateParams struct {
 }
 
 type GenerateResult struct {
+	Method   string
 	URL      *url.URL
+	Header   http.Header
 	FormData map[string]string
 }
 

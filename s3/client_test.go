@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -160,6 +162,8 @@ func TestClient_GenerateDownload(t *testing.T) {
 func TestClient_GenerateUpload(t *testing.T) {
 	c, tempDir, err := initE2EClient(t)
 	if err != nil {
+		wd, _ := os.Getwd()
+		t.Logf("working dir: %s", wd)
 		t.Errorf("failed to init e2e client: %v", err)
 		return
 	}
@@ -197,7 +201,9 @@ func TestClient_GenerateUpload(t *testing.T) {
 		assert.NoError(t, err)
 		defer resp.Body.Close()
 
-		assert.True(t, resp.StatusCode >= http.StatusOK && resp.StatusCode < http.StatusMultipleChoices)
+		assert.Conditionf(t, func() (success bool) {
+			return resp.StatusCode >= http.StatusOK && resp.StatusCode < http.StatusMultipleChoices
+		}, "unexpected status code: %d", resp.StatusCode)
 
 		// cleanup remote file if uploaded, whether success or not
 		t.Cleanup(func() {
@@ -224,10 +230,22 @@ func assertFileContentSame(t *testing.T, path1, path2 string) {
 	sum1 := sha256.Sum256(f1)
 	sum2 := sha256.Sum256(f2)
 
-	assert.Equal(t, sum1[:], sum2[:])
+	assert.Equal(t, hex.EncodeToString(sum1[:]), hex.EncodeToString(sum2[:]))
 }
 
 func generateUserUploadRequest(info *s3up.GenerateResult, localPath string) (*http.Request, error) {
+	switch info.Method {
+	case "POST":
+		return generatePOSTUploadRequest(info, localPath)
+	case "PUT":
+		return generatePUTUploadRequest(info, localPath)
+	default:
+		return nil, fmt.Errorf("unsupported method: %s", info.Method)
+	}
+}
+
+func generatePOSTUploadRequest(info *s3up.GenerateResult, localPath string) (*http.Request, error) {
+
 	buf := bytes.NewBuffer(nil)
 
 	w := multipart.NewWriter(buf)
@@ -264,6 +282,22 @@ func generateUserUploadRequest(info *s3up.GenerateResult, localPath string) (*ht
 	}
 
 	req.Header.Set("Content-Type", w.FormDataContentType())
+
+	return req, nil
+}
+
+func generatePUTUploadRequest(info *s3up.GenerateResult, localPath string) (*http.Request, error) {
+
+	buf, err := os.ReadFile(localPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, info.URL.String(), bytes.NewReader(buf))
+	if err != nil {
+		return nil, err
+	}
+	req.Header = info.Header
 
 	return req, nil
 }

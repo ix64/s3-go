@@ -10,7 +10,7 @@ import (
 type UploadGeneratorType string
 
 const (
-	UploadGeneratorTypeS3 UploadGeneratorType = "s3type"
+	UploadGeneratorTypeS3 UploadGeneratorType = "s3"
 )
 
 func newUploadGenerator(c *Client, t UploadGeneratorType, raw json.RawMessage) (s3up.Generator, error) {

@@ -10,7 +10,7 @@ import (
 type DownloadGeneratorType string
 
 const (
-	DownloadGeneratorTypeS3              DownloadGeneratorType = "s3type"
+	DownloadGeneratorTypeS3              DownloadGeneratorType = "s3"
 	DownloadGeneratorTypeAliyunCDN       DownloadGeneratorType = "aliyun_cdn"
 	DownloadGeneratorTypeTencentCloudCDN DownloadGeneratorType = "tencent_cloud_cdn"
 )
