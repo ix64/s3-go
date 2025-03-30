@@ -92,12 +92,12 @@ func (c *Client) init(ctx context.Context) (err error) {
 
 	c.download, err = newDownloadGenerator(c, c.cfg.DownloadGeneratorType, c.cfg.DownloadGeneratorConfig)
 	if err != nil {
-		return fmt.Errorf("failed to init s3down Generator: %w", err)
+		return fmt.Errorf("failed to init s3down generator: %w", err)
 	}
 
 	c.upload, err = newUploadGenerator(c, c.cfg.UploadGeneratorType, c.cfg.UploadGeneratorConfig)
 	if err != nil {
-		return fmt.Errorf("failed to init s3up Generator: %w", err)
+		return fmt.Errorf("failed to init s3up generator: %w", err)
 	}
 
 	return nil

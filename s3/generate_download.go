@@ -17,10 +17,12 @@ const (
 
 func newDownloadGenerator(c *Client, t DownloadGeneratorType, raw json.RawMessage) (s3down2.Generator, error) {
 	switch t {
-	case DownloadGeneratorTypeS3, "": // default
+	case DownloadGeneratorTypeS3:
 		cfg := &s3down2.GeneratorS3Config{}
-		if err := json.Unmarshal(raw, cfg); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal config: %w", err)
+		if raw != nil {
+			if err := json.Unmarshal(raw, cfg); err != nil {
+				return nil, fmt.Errorf("failed to unmarshal config: %w", err)
+			}
 		}
 		fillDownloadGeneratorS3Defaults(cfg, c)
 		return s3down2.NewGeneratorS3(cfg)

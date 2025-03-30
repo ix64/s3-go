@@ -15,10 +15,12 @@ const (
 
 func newUploadGenerator(c *Client, t UploadGeneratorType, raw json.RawMessage) (s3up.Generator, error) {
 	switch t {
-	case UploadGeneratorTypeS3, "": // default
+	case UploadGeneratorTypeS3:
 		cfg := &s3up.GeneratorS3Config{}
-		if err := json.Unmarshal(raw, cfg); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal config: %w", err)
+		if raw != nil {
+			if err := json.Unmarshal(raw, cfg); err != nil {
+				return nil, fmt.Errorf("failed to unmarshal config: %w", err)
+			}
 		}
 		fillUploadGeneratorS3Defaults(cfg, c)
 		return s3up.NewGeneratorS3(cfg)

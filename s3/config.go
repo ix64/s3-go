@@ -54,5 +54,23 @@ func (c *Config) Validate() error {
 		return fmt.Errorf("secret_key is required")
 	}
 
+	if c.UploadGeneratorType == "" {
+		c.UploadGeneratorType = UploadGeneratorTypeS3
+	}
+	if c.UploadGeneratorType != UploadGeneratorTypeS3 {
+		if c.UploadGeneratorConfig == nil {
+			return fmt.Errorf("upload_generator_config is required")
+		}
+	}
+
+	if c.DownloadGeneratorType == "" {
+		c.DownloadGeneratorType = DownloadGeneratorTypeS3
+	}
+	if c.DownloadGeneratorType != DownloadGeneratorTypeS3 {
+		if c.DownloadGeneratorConfig == nil {
+			return fmt.Errorf("download_generator_config is required")
+		}
+	}
+
 	return nil
 }
