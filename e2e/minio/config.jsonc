@@ -1,4 +1,3 @@
-// MinIO E2E Test Config
 {
   "endpoint": "http://127.0.0.1:9000",
   "bucket": "e2e-test",

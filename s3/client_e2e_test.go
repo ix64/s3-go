@@ -8,8 +8,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/tailscale/hujson"
-
 	"github.com/ix64/s3-go/s3"
 )
 
@@ -28,11 +26,6 @@ func initE2EClient(t *testing.T) (client *s3.Client, tempDir string, err error) 
 		cfgContent, err := os.ReadFile(cfgPath)
 		if err != nil {
 			return nil, "", fmt.Errorf("failed to read config file: %w", err)
-		}
-
-		cfgContent, err = hujson.Standardize(cfgContent)
-		if err != nil {
-			return nil, "", fmt.Errorf("failed to standardize config: %w", err)
 		}
 
 		cfg, err := s3.ParseConfig(cfgContent)
