@@ -13,6 +13,8 @@ type Config struct {
 	BucketLookup s3common.BucketLookupType `json:"bucket_lookup"`
 	Prefix       string                    `json:"prefix"`
 
+	Region string `json:"region"`
+
 	AccessKey string `json:"access_key"`
 	SecretKey string `json:"secret_key"`
 

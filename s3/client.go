@@ -85,9 +85,12 @@ func (c *Client) init(ctx context.Context) (err error) {
 		return err
 	}
 
-	c.region, err = c.c.GetBucketLocation(ctx, c.cfg.Bucket)
-	if err != nil {
-		return err
+	c.region = c.cfg.Region
+	if c.region == "" {
+		c.region, err = c.c.GetBucketLocation(ctx, c.cfg.Bucket)
+		if err != nil {
+			return fmt.Errorf("failed to get bucket location: %w", err)
+		}
 	}
 
 	c.download, err = newDownloadGenerator(c, c.cfg.DownloadGeneratorType, c.cfg.DownloadGeneratorConfig)

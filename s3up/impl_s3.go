@@ -23,12 +23,12 @@ type GeneratorS3Config struct {
 
 	Region string `json:"region"`
 
-	AccessKey string `json:"accessKey"`
-	SecretKey string `json:"secretKey"`
+	AccessKey string `json:"access_key"`
+	SecretKey string `json:"secret_key"`
 
 	// DisableChecksum 部分供应商不支持 sha256 校验
 	// 关闭后存在风险，即用户上传的文件 hash 值不会校验
-	DisableChecksum bool `json:"checksum_enabled"`
+	DisableChecksum bool `json:"disable_checksum"`
 
 	// DisablePOST 部分供应商不支持 Pre-signed POST 允许回退到 Pre-signed PUT
 	//   已知不支持的供应商
